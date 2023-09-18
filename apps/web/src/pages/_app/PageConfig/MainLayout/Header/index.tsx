@@ -55,13 +55,13 @@ const Header: FC = () => {
               <Tabs.Tab value="/">Marketpkace</Tabs.Tab>
             </Link>
 
-            <Link type="router" href={RoutePath.Cart} underline={false}>
+            <Link type="router" href={RoutePath.Products} underline={false}>
               <Tabs.Tab value="/products">Products</Tabs.Tab>
             </Link>
           </Tabs.List>
         </Tabs>
         <Group spacing="lg">
-          <Link href="/cart">
+          <Link type="router" href="/cart">
             <Indicator inline label="2" size={18}>
               <CartSvg active={router.pathname === '/cart'} />
             </Indicator>
