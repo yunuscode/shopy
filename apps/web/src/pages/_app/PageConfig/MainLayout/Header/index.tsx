@@ -42,7 +42,7 @@ const Header: FC = () => {
         <Link type="router" href={RoutePath.Home}>
           <LogoImage />
         </Link>
-        <Tabs color="gray" variant="pills" radius="xl" defaultValue="gallery">
+        <Tabs color="gray" variant="pills" radius="xl" defaultValue="/">
           <Tabs.List>
             <Link type="router" href={RoutePath.Home} underline={false}>
               <Tabs.Tab value="/">Marketpkace</Tabs.Tab>
