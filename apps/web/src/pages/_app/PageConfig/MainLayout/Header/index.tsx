@@ -13,6 +13,7 @@ import { LogoImage } from 'public/images';
 
 import { accountApi } from 'resources/account';
 
+import { useRouter } from 'next/router';
 import ShadowLoginBanner from './components/ShadowLoginBanner';
 
 import CartSvg from './components/icons/cartIcon';
@@ -21,6 +22,7 @@ import LogoutIcon from './components/icons/logoutIcon';
 const Header: FC = () => {
   const { data: account } = accountApi.useGet();
   const { mutate: logout } = accountApi.useSignOut();
+  const router = useRouter();
 
   if (!account) return null;
 
@@ -42,21 +44,26 @@ const Header: FC = () => {
         <Link type="router" href={RoutePath.Home}>
           <LogoImage />
         </Link>
-        <Tabs color="gray" variant="pills" radius="xl" defaultValue="/">
+        <Tabs
+          color="gray"
+          variant="pills"
+          radius="xl"
+          defaultValue={router.pathname}
+        >
           <Tabs.List>
             <Link type="router" href={RoutePath.Home} underline={false}>
               <Tabs.Tab value="/">Marketpkace</Tabs.Tab>
             </Link>
 
-            <Link type="router" href={RoutePath.Products} underline={false}>
+            <Link type="router" href={RoutePath.Cart} underline={false}>
               <Tabs.Tab value="/products">Products</Tabs.Tab>
             </Link>
           </Tabs.List>
         </Tabs>
         <Group spacing="lg">
-          <Link>
+          <Link href="/cart">
             <Indicator inline label="2" size={18}>
-              <CartSvg />
+              <CartSvg active={router.pathname === '/cart'} />
             </Indicator>
           </Link>
           <UnstyledButton onClick={() => logout()}>
