@@ -1,15 +1,15 @@
 import { Stack, Title } from '@mantine/core';
 import Head from 'next/head';
 
-const Home = () => (
+const Products = () => (
   <>
     <Head>
-      <title>Home</title>
+      <title>Products</title>
     </Head>
     <Stack spacing="lg">
-      <Title order={2}>Users</Title>
+      <Title order={2}>Products</Title>
     </Stack>
   </>
 );
 
-export default Home;
+export default Products;
