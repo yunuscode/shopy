@@ -14,6 +14,8 @@ export enum RoutePath {
   Cart = '/cart',
   Products = '/products',
   AddProduct = '/products/add',
+  SuccessPayment = '/cart/success',
+  FailedPayment = '/cart/failed',
 
   // Auth paths
   SignIn = '/sign-in',
@@ -47,6 +49,14 @@ export const routesConfiguration: RoutesConfiguration = {
     layout: LayoutType.MAIN,
   },
   [RoutePath.AddProduct]: {
+    scope: ScopeType.PRIVATE,
+    layout: LayoutType.MAIN,
+  },
+  [RoutePath.SuccessPayment]: {
+    scope: ScopeType.PRIVATE,
+    layout: LayoutType.MAIN,
+  },
+  [RoutePath.FailedPayment]: {
     scope: ScopeType.PRIVATE,
     layout: LayoutType.MAIN,
   },

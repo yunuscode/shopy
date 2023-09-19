@@ -9,6 +9,7 @@ async function handler(ctx: AppKoaContext) {
 
   const cartItems = await cartService.find({
     userId: user._id,
+    productStatus: 'active',
   });
 
   const lineItems = cartItems.results.map((item: Cart) => ({
@@ -24,7 +25,7 @@ async function handler(ctx: AppKoaContext) {
 
   const checkout = await stripe.checkout.sessions.create({
     success_url: config.WEB_URL + '/cart/success',
-    cancel_url: config.WEB_URL + '/cart/cancel',
+    cancel_url: config.WEB_URL + '/cart/failed',
     mode: 'payment',
 
     line_items: lineItems,

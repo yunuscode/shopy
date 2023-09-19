@@ -1,4 +1,4 @@
-import { Table, Tabs, Image, Group, Text, UnstyledButton } from '@mantine/core';
+import { Table, Tabs, Image, Group, Text } from '@mantine/core';
 import { CartListResponse } from 'resources/cart/cart.api';
 import { useStyles } from './styles';
 
@@ -26,11 +26,7 @@ const HistoryTab = ({ data }: { data?: CartListResponse }) => {
         {element.productPrice}
       </td>
       <td>
-        <Group>
-          <UnstyledButton>-</UnstyledButton>
-          <Text>1</Text>
-          <UnstyledButton>+</UnstyledButton>
-        </Group>
+        {element.updatedOn && new Date(element.updatedOn).toLocaleDateString()}
       </td>
     </tr>
   ));
@@ -42,7 +38,7 @@ const HistoryTab = ({ data }: { data?: CartListResponse }) => {
           <tr>
             <th className={styles.classes.tableHeads}>Item</th>
             <th className={styles.classes.tableHeads}>Unit Price</th>
-            <th className={styles.classes.tableHeads}>Quantity</th>
+            <th className={styles.classes.tableHeads}>Date</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>

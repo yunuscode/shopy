@@ -83,7 +83,7 @@ const Products = () => {
         >
           {emptyState && <EmptyScreenCart />}
 
-          {!emptyState && (
+          {!emptyState && activeTab !== 'history' && (
             <Card padding="lg" radius="md" withBorder>
               <Text size="md" weight="bolder">
                 Summary
