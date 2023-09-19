@@ -23,6 +23,7 @@ import { Link } from 'components';
 
 import { accountApi, accountConstants } from 'resources/account';
 import { IconCircleCheck } from '@tabler/icons-react';
+import { useRouter } from 'next/router';
 
 const schema = z.object({
   email: z
@@ -54,9 +55,9 @@ const passwordRules = [
 ];
 
 const SignUp: NextPage = () => {
-  const [email, setEmail] = useState('');
-  const [registered, setRegistered] = useState(false);
-  const [signupToken, setSignupToken] = useState();
+  const [email] = useState('');
+  const [registered] = useState(false);
+  const [signupToken] = useState();
 
   const [passwordRulesData, setPasswordRulesData] = useState(passwordRules);
 
@@ -72,6 +73,8 @@ const SignUp: NextPage = () => {
 
   const passwordValue = watch('password', '');
 
+  const router = useRouter();
+
   useEffect(() => {
     const updatedPasswordRulesData = [...passwordRules];
 
@@ -85,11 +88,8 @@ const SignUp: NextPage = () => {
   const { mutate: signUp, isLoading: isSignUpLoading } = accountApi.useSignUp<SignUpParams>();
 
   const onSubmit = (data: SignUpParams) => signUp(data, {
-    onSuccess: (response: any) => {
-      if (response.signupToken) setSignupToken(response.signupToken);
-
-      setRegistered(true);
-      setEmail(data.email);
+    onSuccess: () => {
+      router.reload();
     },
     onError: (e) => handleError(e, setError),
   });

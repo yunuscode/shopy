@@ -24,7 +24,7 @@ const ProductPage = () => {
     data: products,
     isLoading,
     refetch,
-  } = useListProducts({ myProducts: true });
+  } = useListProducts({ type: 'my' });
 
   return (
     <Stack>
