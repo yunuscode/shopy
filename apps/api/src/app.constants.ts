@@ -1,6 +1,7 @@
 const DATABASE_DOCUMENTS = {
   USERS: 'users',
   TOKENS: 'tokens',
+  PRODUCTS: 'products',
 };
 
 const COOKIES = {
@@ -9,8 +10,4 @@ const COOKIES = {
 
 const TOKEN_SECURITY_LENGTH = 32;
 
-export {
-  DATABASE_DOCUMENTS,
-  COOKIES,
-  TOKEN_SECURITY_LENGTH,
-};
+export { DATABASE_DOCUMENTS, COOKIES, TOKEN_SECURITY_LENGTH };

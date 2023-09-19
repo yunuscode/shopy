@@ -11,6 +11,8 @@ import {
   Title,
   UnstyledButton,
 } from '@mantine/core';
+import Link from 'next/link';
+import { RoutePath } from 'routes';
 import PlusIcon from './components/icons/plus';
 
 const ProductPage = () => (
@@ -19,27 +21,29 @@ const ProductPage = () => (
 
     <SimpleGrid cols={5}>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <UnstyledButton style={{ height: '100%', width: '100%' }}>
-          <Flex
-            h="100%"
-            justify="center"
-            direction="column"
-            gap={4}
-            align="center"
-          >
+        <Link type="router" href={RoutePath.AddProduct}>
+          <UnstyledButton style={{ height: '100%', width: '100%' }}>
             <Flex
-              w={30}
-              h={30}
+              h="100%"
               justify="center"
+              direction="column"
+              gap={4}
               align="center"
-              bg="blue"
-              style={{ borderRadius: 50 }}
             >
-              <PlusIcon />
+              <Flex
+                w={30}
+                h={30}
+                justify="center"
+                align="center"
+                bg="blue"
+                style={{ borderRadius: 50 }}
+              >
+                <PlusIcon />
+              </Flex>
+              <Text color="blue">New product</Text>
             </Flex>
-            <Text color="blue">New product</Text>
-          </Flex>
-        </UnstyledButton>
+          </UnstyledButton>
+        </Link>
       </Card>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section pos="relative">
