@@ -36,3 +36,9 @@ export function useRemoveProductFromCart(productId: string) {
     },
   });
 }
+
+export function useProceedCheckout() {
+  const checkout = () => apiService.post('/cart/proceedCheckout');
+
+  return useMutation(checkout);
+}

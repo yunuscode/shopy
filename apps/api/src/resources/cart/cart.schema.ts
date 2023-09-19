@@ -12,6 +12,8 @@ const schema = z
 
     productStatus: z.enum(['active', 'history']).default('active'),
 
+    cartStripeId: z.string().optional(),
+
     createdOn: z.date().optional(),
     updatedOn: z.date().optional(),
     deletedOn: z.date().optional().nullable(),

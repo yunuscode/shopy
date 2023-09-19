@@ -11,18 +11,33 @@ import {
 } from '@mantine/core';
 import Head from 'next/head';
 import { useState } from 'react';
-import { useCartList } from 'resources/cart/cart.api';
+import { useCartList, useProceedCheckout } from 'resources/cart/cart.api';
+import { useRouter } from 'next/router';
 import CardTab from './components/Cart';
 import HistoryTab from './components/History';
 import EmptyScreenCart from './components/Empty';
 
 const Products = () => {
+  const router = useRouter();
+
   const [activeTab, setActiveTab] = useState<TabsValue>('cart');
   const { data, refetch, isLoading } = useCartList({
     type: activeTab === 'cart' ? 'active' : 'history',
   });
 
+  const { mutate: proceedCheckout, isLoading: isCheckoutLoading } = useProceedCheckout();
+
   const emptyState = activeTab === 'cart' && !data?.count && !isLoading;
+
+  const handleCheckout = () => {
+    proceedCheckout(undefined, {
+      onSuccess: (d) => {
+        if (d.url) {
+          router.push(d.url);
+        }
+      },
+    });
+  };
 
   return (
     <>
@@ -81,7 +96,14 @@ const Products = () => {
                   {data?.items.reduce((a, b) => a + b.productPrice, 0)}
                 </Text>
               </Group>
-              <Button mt={30} fullWidth radius="md" color="blue">
+              <Button
+                onClick={handleCheckout}
+                loading={isCheckoutLoading}
+                mt={30}
+                fullWidth
+                radius="md"
+                color="blue"
+              >
                 Checkout
               </Button>
             </Card>

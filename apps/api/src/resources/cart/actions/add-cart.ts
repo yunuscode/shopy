@@ -19,7 +19,10 @@ async function validator(ctx: AppKoaContext<ValidatedData>, next: Next) {
 
   const isProductExist = await productService.exists({ _id: productId });
 
-  const isProductExistInCart = await cartService.exists({ productId });
+  const isProductExistInCart = await cartService.exists({
+    productId,
+    productStatus: 'active',
+  });
 
   ctx.assertClientError(isProductExist, {
     product: "Product doesn't exist",

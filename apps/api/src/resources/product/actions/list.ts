@@ -47,6 +47,7 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
 
   const userCart = await cartService.find({
     userId: user._id,
+    productStatus: 'active',
   });
 
   const from = parseInt(fromString, 10);
@@ -76,7 +77,7 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
     { sort },
   );
 
-  const items = products.results.map((productItem: any) => {
+  const items = products.results.map((productItem: Product) => {
     return {
       ...productItem,
       inCart:
