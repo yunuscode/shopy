@@ -14,6 +14,7 @@ import { LogoImage } from 'public/images';
 import { accountApi } from 'resources/account';
 
 import { useRouter } from 'next/router';
+import { cartApi } from 'resources/cart';
 import ShadowLoginBanner from './components/ShadowLoginBanner';
 
 import CartSvg from './components/icons/cartIcon';
@@ -22,6 +23,7 @@ import LogoutIcon from './components/icons/logoutIcon';
 const Header: FC = () => {
   const { data: account } = accountApi.useGet();
   const { mutate: logout } = accountApi.useSignOut();
+  const { data: cart } = cartApi.useCartList({ type: 'active' });
   const router = useRouter();
 
   if (!account) return null;
@@ -62,7 +64,7 @@ const Header: FC = () => {
         </Tabs>
         <Group spacing="lg">
           <Link type="router" href="/cart">
-            <Indicator inline label="2" size={18}>
+            <Indicator inline label={undefined || cart?.count} size={18}>
               <CartSvg active={router.pathname === '/cart'} />
             </Indicator>
           </Link>

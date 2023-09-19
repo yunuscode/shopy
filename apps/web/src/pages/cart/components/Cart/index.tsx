@@ -8,64 +8,83 @@ import {
   Flex,
 } from '@mantine/core';
 import { IconX } from '@tabler/icons-react';
+import {
+  CartListResponse,
+  useRemoveProductFromCart,
+} from 'resources/cart/cart.api';
+import { useEffect } from 'react';
+import { Cart } from 'resources/cart/cart.types';
 import { useStyles } from './styles';
 
-const CardTab = () => {
-  const styles = useStyles();
+const CartItem = ({
+  element,
+  refetch,
+}: {
+  element: Cart;
+  refetch: Function;
+}) => {
+  const {
+    mutate: removeFromCart,
+    isLoading,
+    isSuccess,
+  } = useRemoveProductFromCart(element._id);
 
-  const els = [
-    {
-      name: 'DJi pro max super 14',
-      price: 400,
-      quantity: 5,
-      url: 'https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80',
-    },
-    {
-      name: 'DJi pro max super 16',
-      price: 400,
-      quantity: 5,
-      url: 'https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80',
-    },
-  ];
+  useEffect(() => {
+    refetch();
+  }, [isSuccess, refetch]);
 
-  const rows = els.map((element) => (
-    <tr key={element.name}>
+  return (
+    <tr key={element.productName}>
       <td>
         <Group>
           <Image
-            src={element.url}
+            src={element.productImageUrl}
             width={90}
             height={90}
             radius="md"
-            alt={element.name}
+            alt={element.productName}
           />
           <Text size="md" weight="bolder">
-            {element.name}
+            {element.productName}
           </Text>
         </Group>
       </td>
       <td>
         $
-        {element.price}
+        {element.productPrice}
       </td>
       <td>
         <Group>
           <UnstyledButton>-</UnstyledButton>
-          <Text>{element.quantity}</Text>
+          <Text>1</Text>
           <UnstyledButton>+</UnstyledButton>
         </Group>
       </td>
       <td>
-        <UnstyledButton>
+        <UnstyledButton onClick={() => removeFromCart()} disabled={isLoading}>
           <Flex align="center">
             <IconX color="gray" size={14} />
             <Text ml={5} size="sm">
-              Remove
+              {isLoading ? 'Loading' : 'Remove'}
             </Text>
           </Flex>
         </UnstyledButton>
       </td>
     </tr>
+  );
+};
+
+const CartTab = ({
+  data,
+  refetch,
+}: {
+  data?: CartListResponse;
+  refetch: Function;
+}) => {
+  const styles = useStyles();
+
+  const rows = data?.items.map((item) => (
+    <CartItem key={item._id} element={item} refetch={refetch} />
   ));
 
   return (
@@ -74,8 +93,8 @@ const CardTab = () => {
         <thead>
           <tr>
             <th className={styles.classes.tableHeads}>Item</th>
-            <th>Unit Price</th>
-            <th>Quantity</th>
+            <th className={styles.classes.tableHeads}>Unit Price</th>
+            <th className={styles.classes.tableHeads}>Quantity</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>
@@ -84,4 +103,4 @@ const CardTab = () => {
   );
 };
 
-export default CardTab;
+export default CartTab;

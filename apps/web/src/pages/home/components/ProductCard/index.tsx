@@ -7,6 +7,8 @@ import {
   Text,
   Title,
 } from '@mantine/core';
+import { useState } from 'react';
+import { useCreateCartItem } from 'resources/cart/cart.api';
 import { Product } from 'resources/product/product.types';
 
 const ProductCard = ({
@@ -15,36 +17,65 @@ const ProductCard = ({
 }: {
   item?: Product;
   isLoading?: boolean;
-}) => (
-  <Skeleton visible={isLoading}>
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
-      <Card.Section>
-        <Image
-          src={item && item.productImageUrl}
-          height={210}
-          alt={`${item && item.productName}'s image`}
-        />
-      </Card.Section>
+}) => {
+  const { mutate: addProductToCart, isLoading: loadingRequest } = useCreateCartItem();
 
-      <Title size="h3" mt="md">
-        {item && item.productName}
-      </Title>
+  const [addedToCart, setAddedToCart] = useState<boolean>(
+    item?.inCart || false,
+  );
 
-      <Group position="apart" mb="xs" align="center">
-        <Text size="sm" color="gray" weight={500}>
-          Price:
-        </Text>
-        <Text size="xl" weight="bolder">
-          $
-          {item && item.price}
-        </Text>
-      </Group>
+  const handleAddProduct = () => {
+    const productId = item?._id;
+    if (!productId) return;
+    addProductToCart(
+      { productId },
+      {
+        onSuccess: () => {
+          setAddedToCart(true);
+        },
+      },
+    );
+  };
 
-      <Button color="blue" fullWidth mt="md" radius="md">
-        Add to cart
-      </Button>
-    </Card>
-  </Skeleton>
-);
+  return (
+    <Skeleton visible={isLoading}>
+      <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <Card.Section>
+          <Image
+            src={item && item.productImageUrl}
+            height={210}
+            alt={`${item && item.productName}'s image`}
+          />
+        </Card.Section>
+
+        <Title size="h3" mt="md">
+          {item && item.productName}
+        </Title>
+
+        <Group position="apart" mb="xs" align="center">
+          <Text size="sm" color="gray" weight={500}>
+            Price:
+          </Text>
+          <Text size="xl" weight="bolder">
+            $
+            {item && item.price}
+          </Text>
+        </Group>
+
+        <Button
+          color="blue"
+          fullWidth
+          mt="md"
+          radius="md"
+          onClick={addedToCart ? undefined : handleAddProduct}
+          loading={loadingRequest}
+          variant={addedToCart ? 'light' : 'filled'}
+        >
+          {addedToCart ? 'In Cart' : 'Add to cart'}
+        </Button>
+      </Card>
+    </Skeleton>
+  );
+};
 
 export default ProductCard;

@@ -60,7 +60,7 @@ const ProductPage = () => {
         </Card>
         {isLoading
           && new Array(4).fill(1).map(() => (
-            <Skeleton>
+            <Skeleton key={Math.random()}>
               <Card shadow="sm" padding="lg" radius="md" withBorder>
                 <Card.Section pos="relative">
                   <Image height={160} />
@@ -96,7 +96,7 @@ const ProductPage = () => {
             </Skeleton>
           ))}
         {products?.items.map((item: Product) => (
-          <ProductCard item={item} refetch={refetch} />
+          <ProductCard key={item._id} item={item} refetch={refetch} />
         ))}
       </SimpleGrid>
     </Stack>

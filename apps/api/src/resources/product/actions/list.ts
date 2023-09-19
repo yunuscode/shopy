@@ -2,7 +2,9 @@ import { z } from 'zod';
 
 import { AppKoaContext, AppRouter } from 'types';
 import { validateMiddleware } from 'middlewares';
-import { productService } from 'resources/product';
+import { Product, productService } from 'resources/product';
+import { Cart, cartService } from 'resources/cart';
+import { ObjectId } from '@paralect/node-mongo';
 
 const schema = z.object({
   page: z.string().transform(Number).default('1'),
@@ -43,6 +45,10 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
 
   const { user } = ctx.state;
 
+  const userCart = await cartService.find({
+    userId: user._id,
+  });
+
   const from = parseInt(fromString, 10);
   const to = parseInt(toString, 10);
 
@@ -70,8 +76,19 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
     { sort },
   );
 
+  const items = products.results.map((productItem: any) => {
+    return {
+      ...productItem,
+      inCart:
+        userCart.results
+          .map((i: Cart) => i.productId)
+          .filter((i: ObjectId) => i.toString() == productItem._id.toString())
+          .length > 0,
+    };
+  });
+
   ctx.body = {
-    items: products.results,
+    items: items,
     totalPages: products.pagesCount,
     count: products.count,
   };

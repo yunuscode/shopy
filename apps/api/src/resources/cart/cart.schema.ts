@@ -4,12 +4,13 @@ const schema = z
   .object({
     _id: z.string(),
 
-    productName: z.string(),
-    price: z.number(),
-    productImageUrl: z.string().nullable().optional(),
+    productId: z.string(),
     userId: z.string(),
+    productName: z.string(),
+    productPrice: z.number(),
+    productImageUrl: z.string(),
 
-    productStatus: z.enum(['active', 'sold']).default('active'),
+    productStatus: z.enum(['active', 'history']).default('active'),
 
     createdOn: z.date().optional(),
     updatedOn: z.date().optional(),

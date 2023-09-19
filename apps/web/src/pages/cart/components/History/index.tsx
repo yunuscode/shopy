@@ -1,48 +1,34 @@
 import { Table, Tabs, Image, Group, Text, UnstyledButton } from '@mantine/core';
+import { CartListResponse } from 'resources/cart/cart.api';
 import { useStyles } from './styles';
 
-const HistoryTab = () => {
+const HistoryTab = ({ data }: { data?: CartListResponse }) => {
   const styles = useStyles();
 
-  const els = [
-    {
-      name: 'DJi pro max super 14',
-      price: 400,
-      quantity: 5,
-      url: 'https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80',
-    },
-    {
-      name: 'DJi pro max super 16',
-      price: 400,
-      quantity: 5,
-      url: 'https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80',
-    },
-  ];
-
-  const rows = els.map((element) => (
-    <tr key={element.name}>
+  const rows = data?.items.map((element) => (
+    <tr key={element.productName}>
       <td>
         <Group>
           <Image
-            src={element.url}
+            src={element.productImageUrl}
             width={90}
             height={90}
             radius="md"
-            alt={element.name}
+            alt={element.productName}
           />
           <Text size="md" weight="bolder">
-            {element.name}
+            {element.productName}
           </Text>
         </Group>
       </td>
       <td>
         $
-        {element.price}
+        {element.productPrice}
       </td>
       <td>
         <Group>
           <UnstyledButton>-</UnstyledButton>
-          <Text>{element.quantity}</Text>
+          <Text>1</Text>
           <UnstyledButton>+</UnstyledButton>
         </Group>
       </td>
@@ -55,8 +41,8 @@ const HistoryTab = () => {
         <thead>
           <tr>
             <th className={styles.classes.tableHeads}>Item</th>
-            <th>Unit Price</th>
-            <th>Quantity</th>
+            <th className={styles.classes.tableHeads}>Unit Price</th>
+            <th className={styles.classes.tableHeads}>Quantity</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>

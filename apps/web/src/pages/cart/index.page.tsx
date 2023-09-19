@@ -11,11 +11,18 @@ import {
 } from '@mantine/core';
 import Head from 'next/head';
 import { useState } from 'react';
+import { useCartList } from 'resources/cart/cart.api';
 import CardTab from './components/Cart';
 import HistoryTab from './components/History';
+import EmptyScreenCart from './components/Empty';
 
 const Products = () => {
   const [activeTab, setActiveTab] = useState<TabsValue>('cart');
+  const { data, refetch, isLoading } = useCartList({
+    type: activeTab === 'cart' ? 'active' : 'history',
+  });
+
+  const emptyState = activeTab === 'cart' && !data?.count && !isLoading;
 
   return (
     <>
@@ -23,7 +30,7 @@ const Products = () => {
         <title>Products</title>
       </Head>
       <Grid columns={12} align="start">
-        <Grid.Col span={8}>
+        <Grid.Col span={emptyState ? 12 : 8}>
           <Tabs
             variant="unstyled"
             styles={{ tab: { paddingLeft: 0, paddingTop: 0, marginRight: 20 } }}
@@ -49,13 +56,19 @@ const Products = () => {
               </Tabs.Tab>
             </Tabs.List>
 
-            <CardTab />
+            {data?.count !== 0 && <CardTab data={data} refetch={refetch} />}
 
-            <HistoryTab />
+            <HistoryTab data={data} />
           </Tabs>
         </Grid.Col>
-        <Grid.Col span={3} offset={1}>
-          {activeTab === 'cart' && (
+        <Grid.Col
+          span={emptyState ? 0 : 3}
+          offset={emptyState ? 0 : 1}
+          mt={emptyState ? 100 : 0}
+        >
+          {emptyState && <EmptyScreenCart />}
+
+          {!emptyState && (
             <Card padding="lg" radius="md" withBorder>
               <Text size="md" weight="bolder">
                 Summary
@@ -63,7 +76,10 @@ const Products = () => {
               <Divider my="lg" />
               <Group position="apart">
                 <Text color="gray">Total price:</Text>
-                <Text weight="bold">$1,200</Text>
+                <Text weight="bold">
+                  $
+                  {data?.items.reduce((a, b) => a + b.productPrice, 0)}
+                </Text>
               </Group>
               <Button mt={30} fullWidth radius="md" color="blue">
                 Checkout

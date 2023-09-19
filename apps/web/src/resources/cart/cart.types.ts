@@ -1,10 +1,11 @@
-export interface Product {
+export interface Cart {
   _id: string;
   createdOn?: Date;
   updatedOn?: Date;
   deletedOn?: Date | null;
   productName: string;
-  price: number;
+  productId: string;
+  userId: string;
+  productPrice: number;
   productImageUrl?: string | null;
-  inCart?: boolean;
 }
