@@ -6,7 +6,7 @@ import { accountRoutes } from 'resources/account';
 import { userRoutes } from 'resources/user';
 
 import auth from './middlewares/auth.middleware';
-import productRoutes from 'resources/product/product.routes';
+import { productRoutes } from 'resources/product';
 
 export default (app: AppKoa) => {
   app.use(mount('/account', compose([auth, accountRoutes.privateRoutes])));

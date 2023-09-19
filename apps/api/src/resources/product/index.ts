@@ -1,7 +1,7 @@
 import productSchema from './product.schema';
-
-import './user.handler';
+import productService from './product.service';
+import productRoutes from './product.routes';
 
 export * from './product.types';
 
-export { productSchema };
+export { productSchema, productService, productRoutes };

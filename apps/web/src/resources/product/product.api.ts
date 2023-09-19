@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 
 import queryClient from 'query-client';
 import { apiService } from 'services';
@@ -14,7 +14,19 @@ export function useCreateProduct<T>() {
 
   return useMutation<Product, unknown, T>(createProduct, {
     onSuccess: (data) => {
-      queryClient.setQueryData(['product'], data);
+      queryClient.setQueryData(['products'], data);
     },
   });
+}
+
+export function useListProducts<T>(params: T) {
+  const list = () => apiService.get('/products', params);
+
+  interface ProductListResponse {
+    count: number;
+    items: Product[];
+    totalPages: number;
+  }
+
+  return useQuery<ProductListResponse>(['products', params], list);
 }
