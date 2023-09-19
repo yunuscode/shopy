@@ -17,9 +17,14 @@ import { RoutePath } from 'routes';
 import { useListProducts } from 'resources/product/product.api';
 import { Product } from 'resources/product/product.types';
 import PlusIcon from './components/icons/plus';
+import ProductCard from './components/ProductCard';
 
 const ProductPage = () => {
-  const { data: products, isLoading } = useListProducts({ myProducts: true });
+  const {
+    data: products,
+    isLoading,
+    refetch,
+  } = useListProducts({ myProducts: true });
 
   return (
     <Stack>
@@ -28,7 +33,9 @@ const ProductPage = () => {
       <SimpleGrid cols={5}>
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Link type="router" href={RoutePath.AddProduct}>
-            <UnstyledButton style={{ height: '100%', width: '100%' }}>
+            <UnstyledButton
+              style={{ height: '100%', width: '100%', padding: '60px 0' }}
+            >
               <Flex
                 h="100%"
                 justify="center"
@@ -88,50 +95,9 @@ const ProductPage = () => {
               </Card>
             </Skeleton>
           ))}
-        {products?.items.length
-          && products?.items.map((item: Product) => (
-            <Card shadow="sm" padding="lg" radius="md" withBorder>
-              <Card.Section pos="relative">
-                <Image
-                  src={item.productImageUrl}
-                  height={160}
-                  alt={`${item.productName}'s photo`}
-                />
-                <Button
-                  top={10}
-                  right={10}
-                  pos="absolute"
-                  variant="light"
-                  color="blue"
-                  size="sm"
-                  radius="md"
-                >
-                  Delete
-                </Button>
-                <Badge
-                  bottom={10}
-                  right={10}
-                  pos="absolute"
-                  color="pink"
-                  variant="light"
-                >
-                  On Sale
-                </Badge>
-              </Card.Section>
-
-              <Text weight="bold" mt="md" size="lg">
-                {item.productName}
-              </Text>
-
-              <Group position="apart">
-                <Text color="gray">Price</Text>
-                <Text weight="bolder">
-                  $
-                  {item.price}
-                </Text>
-              </Group>
-            </Card>
-          ))}
+        {products?.items.map((item: Product) => (
+          <ProductCard item={item} refetch={refetch} />
+        ))}
       </SimpleGrid>
     </Stack>
   );

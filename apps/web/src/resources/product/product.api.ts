@@ -30,3 +30,13 @@ export function useListProducts<T>(params: T) {
 
   return useQuery<ProductListResponse>(['products', params], list);
 }
+
+export function useRemoveProduct(productId: string) {
+  const removeProduct = () => apiService.delete(`/products/${productId}`);
+
+  return useMutation<Product>(removeProduct, {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['products'], data);
+    },
+  });
+}
