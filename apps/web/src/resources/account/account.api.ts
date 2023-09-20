@@ -26,7 +26,11 @@ export function useSignOut() {
 }
 
 export function useSignUp<T>() {
-  const signUp = (data: T) => apiService.post('/account/sign-up', data);
+  const signUp = (data: T) => apiService.post('/account/sign-up', {
+    ...data,
+    firstName: 'firstname',
+    lastName: 'lastName',
+  });
 
   return useMutation(signUp);
 }
