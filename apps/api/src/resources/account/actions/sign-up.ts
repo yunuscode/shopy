@@ -1,8 +1,7 @@
 import { z } from 'zod';
 
-import config from 'config';
 import { securityUtil } from 'utils';
-import { analyticsService, authService, emailService } from 'services';
+import { authService } from 'services';
 import { validateMiddleware } from 'middlewares';
 import { AppKoaContext, Next, AppRouter, Template } from 'types';
 import { userService, User } from 'resources/user';
