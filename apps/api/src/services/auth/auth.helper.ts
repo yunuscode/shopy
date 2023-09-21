@@ -8,9 +8,12 @@ import { AppKoaContext } from 'types';
 export const setTokenCookies = ({
   ctx,
   accessToken,
-}: { ctx: AppKoaContext, accessToken: string }) => {
+}: {
+  ctx: AppKoaContext;
+  accessToken: string;
+}) => {
   const parsedUrl = url.parse(config.WEB_URL);
-  
+
   if (!parsedUrl.hostname) {
     return;
   }
@@ -19,7 +22,7 @@ export const setTokenCookies = ({
   const cookiesDomain = parsed.domain || undefined;
 
   ctx.cookies.set(COOKIES.ACCESS_TOKEN, accessToken, {
-    httpOnly: true,
+    httpOnly: false,
     domain: cookiesDomain,
     expires: new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000), // 10 years
   });
